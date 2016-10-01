@@ -15,13 +15,12 @@ declare -A DYNDNS2=(
 )
 SUCCESS=('good' 'nochg')
 
-dnscode()
+dns_status()
 {
-  echo "$1: " ${DYNDNS2[$1]}
   if [[ "${SUCCESS[@]}" =~ "$1" ]]; then
-    exit 0
+    echo "0"
   else
-    exit 1
+    echo "1"
   fi
 }
 
@@ -30,4 +29,5 @@ if [ "$#" -lt 3 ]; then
   exit 1
 fi
 VAL=$(curl -s --user "$1:$2" "https://www.dnsdynamic.org/api/?hostname=$3&myip=$(myip)")
-dnscode $VAL
+echo "$VAL: ${DYNDNS2[$VAL]}"
+exit $(dns_status $VAL)
