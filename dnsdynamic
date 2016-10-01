@@ -1,0 +1,33 @@
+#!/bin/bash
+
+declare -A DYNDNS2=(
+  ['badauth']='User or password incorrect'
+  ['!donator']='No enough privileges'
+  ['good']='Update successful'
+  ['nochg']='Update successful. No changes'
+  ['notfqdn']='Hostname is erroneous'
+  ['nohost']='Hostname not found'
+  ['numhost']='Too many hosts specified'
+  ['abuse']='Hostname is blocked'
+  ['badagent']='Agent-related error'
+  ['dnserr']='DNS Error'
+  ['911']='Under maintenance'
+)
+SUCCESS=('good' 'nochg')
+
+dnscode()
+{
+  echo "$1: " ${DYNDNS2[$1]}
+  if [[ "${SUCCESS[@]}" =~ "$1" ]]; then
+    exit 0
+  else
+    exit 1
+  fi
+}
+
+if [ "$#" -lt 3 ]; then
+  echo "Usage: $0 <username> <password> <hostname>" 1> /dev/stderr
+  exit 1
+fi
+VAL=$(curl -s --user "$1:$2" "https://www.dnsdynamic.org/api/?hostname=$3&myip=$(myip)")
+dnscode $VAL
