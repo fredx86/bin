@@ -1,0 +1,17 @@
+#!/bin/bash
+
+dns_status()
+{
+  if [ "$1" = "OK" ]; then
+    echo "0"
+  else
+    echo "1"
+  fi
+}
+
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <token> <hostname>" 1> /dev/stderr
+  exit 1
+fi
+VAL=$(curl -s "https://www.duckdns.org/update?token=$1&domains=$2&ip=$(myip)")
+exit $(dns_status $VAL)
