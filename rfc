@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ! $2 ]; then
+  echo "Usage: $0 <RFC> <output> [mode]" > /dev/stderr
+  echo "## mode"
+  echo "  txt/ascii"
+  echo "  txt/pdf"
+  echo "  html/ascii"
+  echo "  html/pdf"
+  exit 1
+fi
+
+curl -s POST -F "input=@$1" -F "modeAsFormat=$3" "https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi" > "$2"

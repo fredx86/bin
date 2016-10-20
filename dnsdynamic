@@ -25,7 +25,7 @@ dns_status()
 }
 
 if [ "$#" -lt 3 ]; then
-  echo "Usage: $0 <username> <password> <hostname>" 1> /dev/stderr
+  echo "Usage: $0 <username> <password> <hostname>" > /dev/stderr
   exit 1
 fi
 VAL=$(curl -s --user "$1:$2" "https://www.dnsdynamic.org/api/?hostname=$3&myip=$(myip)")
