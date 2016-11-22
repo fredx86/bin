@@ -1,0 +1,12 @@
+#!/bin/bash
+
+GIT="$GITUSER"
+if [ "$2" ]; then
+  GIT="$2"
+fi
+if [ ! "$1" ] || [ ! "$GIT" ]; then
+  echo "Usage: clone <directory> [git user]" > /dev/stderr
+  exit 1
+fi
+echo "Cloning from git@github.com:$GIT/$1.git"
+git clone "git@github.com:$GIT/$1.git"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ! "$1" ]; then
+  echo "Usage: findtxt <text> [text...]" > /dev/stderr
+  exit 1
+fi
+while [ "$1" ]; do
+  find . -exec grep -n -H -i "$1" {} \; 2>/dev/null
+  shift
+done
