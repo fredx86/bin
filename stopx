@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$1" ]; then
+    SERVICE="$1"
+else
+    SERVICE="mdm"
+fi
+sudo service "$SERVICE" stop
+
