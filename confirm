@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo -n "Do you want to continue: [Y/n] " > /dev/stderr
+read R
+R=$(echo "$R" | xargs)
+if [ ! "$R" ] || [ "${R^^}" == "Y" ]; then
+    exit 0
+fi
+echo "Abort." > /dev/stderr
+exit 1
