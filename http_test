@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+import sys
+import urllib
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+ENCODING = "utf-8"
+
+class TestServer(BaseHTTPRequestHandler):
+  def _set_headers(self):
+    self.url = urllib.parse.urlparse(self.path)
+    self.send_response(200)
+    self.send_header('Content-type', 'text/html')
+    self.end_headers()
+
+  def _write(self, s, encoding = ENCODING):
+    self.wfile.write(bytes(s + "\n", encoding))
+
+  def _write_path(self):
+    self._write("## Path")
+    self._write(self.url.path)
+ 
+  def _write_query(self):
+    self._write("## Query")
+    parameters = urllib.parse.parse_qsl(self.url.query)
+    for p in parameters:
+      self._write(p[0] + ": " + p[1])
+
+  def _write_headers(self):
+    self._write("## Headers")
+    for key in self.headers:
+      self._write(key + ": " + self.headers[key])
+
+  def _write_data(self):
+    self._write("## Data")
+    size = int(self.headers["content-length"])
+    data = self.rfile.read(size)
+    parameters = urllib.parse.parse_qsl(data)
+    for p in parameters:
+      self._write(p[0].decode(ENCODING) + ": " + p[1].decode(ENCODING))
+
+  def do_GET(self):
+    self._set_headers()
+    self._write_path()
+    self._write_query()
+    self._write_headers()
+    self._write_data()
+
+  def do_POST(self):
+    self._set_headers()
+    self._write_path()
+    self._write_query()
+    self._write_headers()
+    self._write_data()
+
+def http_server(port = 8080):
+  try:
+    httpd = HTTPServer(('', port), TestServer)
+    httpd.serve_forever()
+  except KeyboardInterrupt:
+    httpd.socket.close()
+
+if len(sys.argv) == 2:
+  http_server(int(sys.argv[1]))
+else:
+  http_server()
