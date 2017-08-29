@@ -15,7 +15,7 @@ declare -A DYNDNS2=(
 )
 SUCCESS=('good' 'nochg')
 
-dns_status()
+dns_exit_status()
 {
   if [[ "${SUCCESS[@]}" =~ "$1" ]]; then
     echo "0"
@@ -24,10 +24,25 @@ dns_status()
   fi
 }
 
-if [ "$#" -lt 3 ]; then
-  echo "Usage: $0 <username> <password> <hostname>" > /dev/stderr
+if [ ! "$2" ]; then
+  echo "Usage: $0 <username> <hostname>" > /dev/stderr
   exit 1
 fi
-VAL=$(curl -s --user "$1:$2" "https://www.dnsdynamic.org/api/?hostname=$3&myip=$(myip)")
-echo "$VAL: ${DYNDNS2[$VAL]}"
-exit $(dns_status $VAL)
+
+USER="$1"
+HOST="$2"
+read -s PASS
+
+if [ ! "$PASS" ]; then
+  echo "Missing password, abort." > /dev/stderr
+  exit 1
+fi
+
+VAL=$(curl -s --user "$USER:$PASS" "https://www.dnsdynamic.org/api/?hostname=$HOST&myip=$(myip)")
+STR="${DYNDNS2[$VAL]}"
+if [ "$STR" ]; then
+  echo "$STR"
+else
+  echo "$VAL"
+fi
+exit $(dns_exit_status "$VAL")
