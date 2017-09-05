@@ -1,0 +1,17 @@
+#!/bin/bash
+
+declare -A VLC_PATH=(
+  ['msys']='/c/Program Files (x86)/VideoLAN/VLC/vlc.exe'
+)
+
+vlc_path()
+{
+  VLC="${VLC_PATH[$OSTYPE]}"
+  if [ ! "$VLC" ]; then
+    echo "vlc"
+  else
+    echo "$VLC"
+  fi
+}
+
+"$(vlc_path)" --one-instance --started-from-file --playlist-enqueue "$@"

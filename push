@@ -1,7 +1,4 @@
 #!/bin/bash
 
-MSG="Various changes"
-if [ "$1" ]; then
-  MSG="$1"
-fi
+MSG=$(arg_if_null "$1" "Various changes")
 git add -A && git commit -am "$MSG" && git pull && git push
