@@ -2,9 +2,10 @@
 
 DIR=$(arg_if_null "$1" ".")
 COUNT=$(arg_if_null "$2" 1)
+EXTENSIONS=$(arg_if_null "$3" "mp4 mkv wmv avi")
 PLAYLIST=playlist.dat
 
-(find "$DIR" -type f ! -name '*.srt' 2> /dev/null | shuf -n $COUNT) > $PLAYLIST
+(find_files "$DIR" "$EXTENSIONS" 2> /dev/null | shuf -n $COUNT) > $PLAYLIST
 
 while read -r FILE; do
   echo "$FILE"

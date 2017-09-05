@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ ! "$1" ]; then
+  echo "Usage: $0 <directory> [extensions]" > /dev/stderr
+  exit 1
+fi
+
+CMD="find $1"
+for MEDIA in $2; do
+  if [ "$ARGS" ]; then
+    ARGS=" -o$ARGS"
+  fi
+  ARGS=" -type f -name '*.$MEDIA'$ARGS"
+done
+eval "$CMD$ARGS"
