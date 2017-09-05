@@ -7,6 +7,7 @@ PLAYLIST=playlist.dat
 (find "$DIR" -type f ! -name '*.srt' 2> /dev/null | shuf -n $COUNT) > $PLAYLIST
 
 while read -r FILE; do
-  ./vlc_enqueue "$FILE" 2> /dev/null &
+  echo "$FILE"
+  vlc_enqueue "$FILE" 2> /dev/null &
 done < $PLAYLIST
 rm -f $PLAYLIST
