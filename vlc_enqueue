@@ -14,4 +14,4 @@ vlc_path()
   fi
 }
 
-"$(vlc_path)" --one-instance --started-from-file --playlist-enqueue "$@"
+"$(vlc_path)" --started-from-file --playlist-enqueue "$@"
