@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ "$OSTYPE" = "msys" ]; then
-  choco install "$1"
-else
-  dpkg -i "$1" || apt-get install -f && dpkg -i "$1"
-fi
