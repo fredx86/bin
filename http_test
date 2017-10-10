@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import urllib
@@ -19,7 +19,7 @@ class TestServer(BaseHTTPRequestHandler):
   def _write_path(self):
     self._write("## Path")
     self._write(self.url.path)
- 
+
   def _write_query(self):
     self._write("## Query")
     parameters = urllib.parse.parse_qsl(self.url.query)
@@ -56,6 +56,7 @@ class TestServer(BaseHTTPRequestHandler):
 def http_server(port = 8080):
   try:
     httpd = HTTPServer(('', port), TestServer)
+    print("## Starting on port", port)
     httpd.serve_forever()
   except KeyboardInterrupt:
     httpd.socket.close()
