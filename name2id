@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+import sys
+import json
+
+try:
+  id = sys.argv[1].lower().replace(" ", "_")
+  conf = json.load(open("conf.json", "r"))
+  print(conf[id])
+  sys.exit(0)
+except:
+  sys.exit(1)
