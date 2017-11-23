@@ -1,0 +1,16 @@
+#!/bin/bash
+
+FILE=$(arg_if_null "$1" ".tmp.m3u")
+
+cleanup()
+{
+  rm -f "$FILE"
+}
+
+trap cleanup SIGINT
+
+while read LINE; do
+  echo "$LINE" >> "$FILE"
+done
+vlc_enqueue "$FILE" 2> /dev/null
+cleanup

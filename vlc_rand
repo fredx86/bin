@@ -3,8 +3,10 @@
 DIR=$(arg_if_null "$1" ".")
 COUNT=$(arg_if_null "$2" 1)
 EXTENSIONS=$(arg_if_null "$3" "mp4 mkv wmv avi")
-PLAYLIST=".playlist.m3u"
 
-(find_files "$DIR" "$EXTENSIONS" 2> /dev/null | shuf -n $COUNT) > "$PLAYLIST"
-vlc_enqueue "$PLAYLIST" 2> /dev/null
-rm -f "$PLAYLIST"
+if [ "$1" = "--help" ]; then
+  echo "Usage: vlc_rand [directory] [count] [extensions]" > /dev/stderr
+  exit 0
+fi
+
+(find_files "$DIR" "$EXTENSIONS" 2> /dev/null | shuf -n $COUNT) | vlc_stdin
