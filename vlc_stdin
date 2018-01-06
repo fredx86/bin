@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE=$(arg_if_null "$1" ".tmp.m3u")
+FILE=$(arg_if_null "$1" ".vlc.$$.m3u")
 
 cleanup()
 {
@@ -9,6 +9,7 @@ cleanup()
 
 trap cleanup SIGINT
 
+touch "$FILE"
 while read LINE; do
   echo "$LINE" >> "$FILE"
 done
