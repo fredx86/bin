@@ -2,16 +2,13 @@
 
 declare -A VLC_PATH=(
   ['msys']='/c/Program Files (x86)/VideoLAN/VLC/vlc.exe'
+  ['linux-gnu']='/mnt/c/Program Files (x86)/VideoLAN/VLC/vlc.exe'
 )
+
 
 vlc_path()
 {
-  VLC="${VLC_PATH[$OSTYPE]}"
-  if [ ! "$VLC" ]; then
-    echo "vlc"
-  else
-    echo "$VLC"
-  fi
+  (has_binary vlc && echo "vlc") || echo "${VLC_PATH[$OSTYPE]}"
 }
 
 "$(vlc_path)" --started-from-file --playlist-enqueue "$@"
