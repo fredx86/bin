@@ -1,10 +1,17 @@
 #!/bin/bash
 
 if [ ! "$1" ]; then
-  echo "Usage: $0 <text> [text...]" > /dev/stderr
+  echo "`basename $0` <Text> [Directory] [Search]"
   exit 1
 fi
-while [ "$1" ]; do
-  find . -type f -name "*.*" -exec grep -n -H -i "$1" {} \; 2> /dev/null
-  shift
-done
+
+get_value()
+{
+  [ -z "$1" ] && echo "$2" || echo "$1"
+}
+
+DIR=`get_value "$2" "."`
+SEARCH=`get_value "$3" '*.*'`
+
+find "$DIR" -type f -name "$SEARCH" -exec grep -n -H "$1" {} \; 2> \
+/dev/null | awk '{$1=$1};1'
