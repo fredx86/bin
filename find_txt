@@ -13,5 +13,4 @@ get_value()
 DIR=`get_value "$2" "."`
 SEARCH=`get_value "$3" '*.*'`
 
-find "$DIR" -type f -name "$SEARCH" -exec grep -n -H "$1" {} \; 2> \
-/dev/null | awk '{$1=$1};1'
+find "$DIR" -type f -name "$SEARCH" -exec grep -n -H "$1" {} \; 2> /dev/null | awk '{$1=$1};1'
